@@ -23,7 +23,7 @@ class Organization
     {
         $search_items = $this->request->get('/organizations');
         $collection = new EntityCollection();
-
+        
         foreach ($search_items as $item) {
             $collection->addItem(new OrganizationEntity($item));
         }

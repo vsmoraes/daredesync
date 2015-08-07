@@ -16,7 +16,7 @@ class EntityCollection implements ArrayAccess, Countable, IteratorAggregate
 
     public function __construct($items = [])
     {
-        if (! empty($items)) {
+        if (!empty($items)) {
             $this->addItems($items);
         }
     }
@@ -94,7 +94,7 @@ class EntityCollection implements ArrayAccess, Countable, IteratorAggregate
      */
     public function offsetSet($offset, $value)
     {
-        if (! $value instanceof Entity) {
+        if (!$value instanceof Entity) {
             throw new \InvalidArgumentException('Not an instance on Entity');
         }
 
@@ -119,7 +119,7 @@ class EntityCollection implements ArrayAccess, Countable, IteratorAggregate
     public function offsetUnset($offset)
     {
         unset($this->items[$offset]);
-}
+    }
 
     /**
      * (PHP 5 &gt;= 5.1.0)<br/>
