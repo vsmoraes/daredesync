@@ -5,4 +5,5 @@ php:
   - hhvm
 
 before_script:
+    - cp ./.env.example ./.env
     - composer install
