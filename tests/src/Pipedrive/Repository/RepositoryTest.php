@@ -1,9 +1,29 @@
 <?php
 
+use Sync\Pipedrive\Entity\Organization;
 use Sync\Pipedrive\Repository\Organization as OrganizationRepository;
 
 class RepositoryTest extends PHPUnit_Framework_TestCase
 {
+    public function testShouldRetrieveAnOrganization()
+    {
+        $expected = $this->buildResult()[0];
+
+        $requestMock = $this->getMockBuilder('Sync\Pipedrive\Request')
+            ->setMethods(['get'])
+            ->getMock();
+
+        $requestMock->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue($expected));
+
+        $repository = new OrganizationRepository($requestMock);
+        $result = $repository->findById($expected['id']);
+
+        $this->assertInstanceOf(Organization::class, $result);
+        $this->assertEquals($expected['name'], $result->name);
+    }
+
     public function testShouldRetrieveOrganizationsCollection()
     {
         $expected = $this->buildResult();
