@@ -2,7 +2,6 @@
 
 namespace Sync\Pipedrive\Entity;
 
-
 abstract class Entity
 {
     public function __construct($attributes = [])

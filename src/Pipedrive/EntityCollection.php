@@ -11,7 +11,11 @@ use Traversable;
 
 class EntityCollection implements ArrayAccess, Countable, IteratorAggregate
 {
-
+    /**
+     * Item collection
+     *
+     * @var array
+     */
     protected $items = [];
 
     public function __construct($items = [])
@@ -41,6 +45,16 @@ class EntityCollection implements ArrayAccess, Countable, IteratorAggregate
     public function addItem(Entity $entity)
     {
         $this->items[] = $entity;
+    }
+
+    /**
+     * Convert items to string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return print_r($this->items, true);
     }
 
     /**

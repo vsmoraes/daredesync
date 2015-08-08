@@ -1,4 +1,11 @@
 {
+    "name": "vsmoraes/daredesync",
+    "description": "Sync data from Pipedrive and local database",
+    "keywords": ["darede", "sync"],
+    "license": "MIT",
+    "authors": [
+        { "name": "Vinicius Moraes", "email": "vinicius@archlinux.com.br" }
+    ],
     "require": {
         "php": ">=5.6",
         "vlucas/phpdotenv": "^2.0",

@@ -3,6 +3,7 @@
 namespace Sync\Pipedrive\Guzzle;
 
 use GuzzleHttp\Client;
+use Sync\App;
 use Sync\Pipedrive\Request as RequestInterface;
 
 class Request implements RequestInterface
@@ -28,19 +29,27 @@ class Request implements RequestInterface
      */
     public function get($endpoint, $params = [])
     {
-        $result = $this->client
-            ->get($this->buildEndpoint($endpoint, $params));
+        $url = $this->buildEndpoint($endpoint, $params);
+        $result = $this->client->get($url);
 
         if ($result->getStatusCode() != 200) {
+            App::getInstance()
+                ->getLogger()
+                ->addDebug($url . ' ' . $result->getStatusCode() . ': ' . $result->getBody());
+
             /**
              * @todo create an new exception
              */
             throw new \Exception('Error during the request...');
         }
 
+        App::getInstance()
+            ->getLogger()
+            ->addDebug($url . ' ' . $result->getStatusCode() . ': ' . $result->getBody());
+
         $result = json_decode($result->getBody(), true);
 
-        if (! $result['success']) {
+        if (!$result['success']) {
             return [];
         }
 
@@ -57,10 +66,10 @@ class Request implements RequestInterface
      */
     protected function buildEndpoint($endpoint, $params = [])
     {
-        if (! array_key_exists('api_token', $params)) {
+        if (!array_key_exists('api_token', $params)) {
             $params['api_token'] = getenv('PIPEDRIVE_API_TOKEN');
         }
 
-        return getenv('PIPEDRIVE_URL') . $endpoint . '/' . http_build_query($params);
+        return getenv('PIPEDRIVE_URL') . $endpoint . '?' . http_build_query($params);
     }
 }

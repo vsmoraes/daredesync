@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Client;
 use Sync\Pipedrive\Request as RequestInterface;
 use Sync\Pipedrive\Guzzle\Request;
 
@@ -14,5 +15,6 @@ $app = \Sync\App::start(
 );
 
 $app->bind(RequestInterface::class, Request::class);
+$app->bind(Client::class, new Client([]));
 
 return $app;
