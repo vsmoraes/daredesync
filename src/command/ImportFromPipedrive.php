@@ -29,7 +29,6 @@ class ImportFromPipedrive extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $request = App::getInstance()->resolve(Request::class);
-        var_dump($request);die();
-        $orgRepo = new Organization();
+        $orgRepo = new Organization($request);
     }
 }
