@@ -1,7 +1,7 @@
 # Darede Sync
 
-[![Build Status](https://travis-ci.org/vsmoraes/daredesyc.svg)](https://travis-ci.org/vsmoraes/daredesyc)
-[![License](https://poser.pugx.org/vsmoraes/daredesyc/license.svg)](https://packagist.org/packages/vsmoraes/daredesyc)
+[![Build Status](https://travis-ci.org/vsmoraes/daredesync.svg)](https://travis-ci.org/vsmoraes/daredesync)
+[![License](https://poser.pugx.org/vsmoraes/daredesync/license.svg)](https://packagist.org/packages/vsmoraes/daredesync)
 
 Sync data from the Pipedrive into de local database
 
