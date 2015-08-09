@@ -9,12 +9,12 @@ class Person extends Entity
      *
      * @var int
      */
-    public $id;
+    protected $id;
 
     /**
      * Person name
      *
      * @var string
      */
-    public $name;
+    protected $name;
 }
