@@ -4,17 +4,23 @@ namespace Sync\Support;
 
 abstract class Entity
 {
+    /**
+     * Initial attributes values
+     *
+     * @var array
+     */
     protected $attributes = [];
+
+    /**
+     * Mark if the attributes have changed
+     *
+     * @var bool
+     */
     protected $isDirty = false;
 
     public function __construct($attributes = [])
     {
-        foreach ($attributes as $attribute => $value) {
-            if (property_exists($this, $attribute)) {
-                $this->{$attribute} = $value;
-            }
-        }
-
+        $this->loadArrayAsAttributes($attributes);
         $this->attributes = $attributes;
     }
 
@@ -54,6 +60,20 @@ abstract class Entity
     }
 
     /**
+     * Fill the object's attributes based on an array
+     *
+     * @param array $attributes
+     */
+    protected function loadArrayAsAttributes(array $attributes = [])
+    {
+        foreach ($attributes as $attribute => $value) {
+            if (property_exists($this, $attribute)) {
+                $this->{$attribute} = $value;
+            }
+        }
+    }
+
+    /**
      * Mark the object as dirty
      *
      * @param $attribute
@@ -61,11 +81,61 @@ abstract class Entity
      */
     protected function set($attribute, $value)
     {
-        if ($value != $this->{$attribute}) {
-            $this->isDirty = true;
+        $this->{$attribute} = $value;
+
+        $this->markAsDirty();
+    }
+
+    /**
+     * Retrieve the attributes that have their value changed
+     *
+     * @return array
+     */
+    public function getDirty()
+    {
+        $attributes = [];
+
+        foreach (get_object_vars($this) as $attribute => $value) {
+            if ($this->attributeHasChanged($attribute)) {
+                $attributes[$attribute] = $this->{$attribute};
+            }
         }
 
-        $this->{$attribute} = $value;
+        return $attributes;
+    }
+
+    /**
+     * Return true if the value of the attribute has changed
+     *
+     * @param $attribute
+     *
+     * @return bool
+     */
+    protected function attributeHasChanged($attribute)
+    {
+        if (! array_key_exists($attribute, $this->attributes)) {
+            return false;
+        }
+
+        if ($this->attributes[$attribute] == $this->{$attribute}) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Mark the object as dirty if one or more attributes have changed
+     */
+    protected function markAsDirty()
+    {
+        $dirty = false;
+
+        if (count($this->getDirty()) > 0) {
+            $dirty = true;
+        }
+
+        $this->isDirty = $dirty;
     }
 
     /**
