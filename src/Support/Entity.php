@@ -1,6 +1,6 @@
 <?php
 
-namespace Sync\Pipedrive\Entity;
+namespace Sync\Support;
 
 abstract class Entity
 {

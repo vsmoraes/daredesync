@@ -2,6 +2,8 @@
 
 namespace Sync\Pipedrive\Entity;
 
+use Sync\Support\Entity;
+
 class Organization extends Entity
 {
     /**

@@ -6,7 +6,6 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use Sync\Pipedrive\Entity\Entity;
 use Traversable;
 
 class EntityCollection implements ArrayAccess, Countable, IteratorAggregate
