@@ -1,6 +1,6 @@
 <?php
 
-use Sync\Pipedrive\EntityCollection;
+use Sync\Support\EntityCollection;
 use Sync\Pipedrive\Entity\Organization;
 
 class EntityCollectionTest extends PHPUnit_Framework_TestCase

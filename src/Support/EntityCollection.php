@@ -1,6 +1,6 @@
 <?php
 
-namespace Sync\Pipedrive;
+namespace Sync\Support;
 
 use ArrayAccess;
 use ArrayIterator;

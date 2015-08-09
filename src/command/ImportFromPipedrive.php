@@ -32,7 +32,7 @@ class ImportFromPipedrive extends Command
 
         $org_collection = $org_repo->all();
         foreach ($org_collection as $org) {
-            $output->writeln('Organization: ' . $org->name);
+            $output->writeln('Organization: ' . $org->getName());
         }
     }
 }

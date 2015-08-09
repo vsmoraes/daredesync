@@ -3,7 +3,7 @@
 namespace Sync\Pipedrive\Repository;
 
 use Sync\Pipedrive\Entity\Organization as OrganizationEntity;
-use Sync\Pipedrive\EntityCollection;
+use Sync\Support\EntityCollection;
 use Sync\Pipedrive\Request;
 
 class Organization
