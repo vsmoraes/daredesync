@@ -21,7 +21,7 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
         $result = $repository->findById($expected['id']);
 
         $this->assertInstanceOf(Organization::class, $result);
-        $this->assertEquals($expected['name'], $result->name);
+        $this->assertEquals($expected['name'], $result->getName());
     }
 
     public function testShouldRetrieveOrganizationsCollection()
@@ -40,9 +40,9 @@ class RepositoryTest extends PHPUnit_Framework_TestCase
         $result = $repository->all();
 
         $this->assertCount(3, $result);
-        $this->assertEquals($expected[0]['name'], $result[0]->name);
-        $this->assertEquals($expected[1]['name'], $result[1]->name);
-        $this->assertEquals($expected[2]['name'], $result[2]->name);
+        $this->assertEquals($expected[0]['name'], $result[0]->getName());
+        $this->assertEquals($expected[1]['name'], $result[1]->getName());
+        $this->assertEquals($expected[2]['name'], $result[2]->getName());
     }
 
     protected function buildResult()
