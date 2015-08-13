@@ -2,6 +2,7 @@
 
 namespace Sync;
 
+use Illuminate\Database\Capsule\Manager;
 use Lscms\IoC\IoC;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -31,10 +32,42 @@ class App
      */
     private $logger;
 
-    public function __construct(IoC $container, Console $console)
+    /**
+     * @var Manager
+     */
+    private $database;
+
+    public function __construct(IoC $container, Console $console, Manager $database)
     {
         $this->container = $container;
         $this->console = $console;
+        $this->database = $database;
+
+        $this->openDatabaseConnection();
+    }
+
+    private function openDatabaseConnection()
+    {
+        $this->database->addConnection([
+            'driver' => getenv('DB_DRIVER'),
+            'host' => getenv('DB_HOST') ?: null,
+            'database' => getenv('DB_DATABASE'),
+            'username' => getenv('DB_USERNAME') ?: null,
+            'password' => getenv('DB_PASSWORD') ?: null,
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => ''
+        ]);
+    }
+
+    /**
+     * Get the database instance
+     *
+     * @return Manager
+     */
+    public function getDatabase()
+    {
+        return $this->database;
     }
 
     /**
@@ -136,9 +169,9 @@ class App
      * @return Singleton
      * @throws \Exception
      */
-    public static function start(IoC $container, Console $console)
+    public static function start(IoC $container, Console $console, Manager $database)
     {
-        static::$instance = new static($container, $console);
+        static::$instance = new static($container, $console, $database);
 
         return static::getInstance();
     }

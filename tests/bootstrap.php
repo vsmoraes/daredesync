@@ -13,5 +13,6 @@ $dotenv->load();
  */
 $app = \Sync\App::start(
     new \Lscms\IoC\IoC(),
-    new Symfony\Component\Console\Application()
+    new Symfony\Component\Console\Application(),
+    new \Illuminate\Database\Capsule\Manager()
 );
