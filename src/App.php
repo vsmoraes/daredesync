@@ -58,6 +58,8 @@ class App
             'collation' => 'utf8_unicode_ci',
             'prefix' => ''
         ]);
+
+        $this->database->bootEloquent();
     }
 
     /**
