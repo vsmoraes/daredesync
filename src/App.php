@@ -2,13 +2,13 @@
 
 namespace Sync;
 
-use Illuminate\Database\Capsule\Manager;
 use Lscms\IoC\IoC;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Command\Command;
+use Sync\Support\Database;
 
 class App
 {
@@ -33,39 +33,21 @@ class App
     private $logger;
 
     /**
-     * @var Manager
+     * @var Database
      */
     private $database;
 
-    public function __construct(IoC $container, Console $console, Manager $database)
+    public function __construct(IoC $container, Console $console, Database $database)
     {
         $this->container = $container;
         $this->console = $console;
         $this->database = $database;
-
-        $this->openDatabaseConnection();
-    }
-
-    private function openDatabaseConnection()
-    {
-        $this->database->addConnection([
-            'driver' => getenv('DB_DRIVER'),
-            'host' => getenv('DB_HOST') ?: null,
-            'database' => getenv('DB_DATABASE'),
-            'username' => getenv('DB_USERNAME') ?: null,
-            'password' => getenv('DB_PASSWORD') ?: null,
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => ''
-        ]);
-
-        $this->database->bootEloquent();
     }
 
     /**
      * Get the database instance
      *
-     * @return Manager
+     * @return Database
      */
     public function getDatabase()
     {
@@ -171,7 +153,7 @@ class App
      * @return Singleton
      * @throws \Exception
      */
-    public static function start(IoC $container, Console $console, Manager $database)
+    public static function start(IoC $container, Console $console, Database $database)
     {
         static::$instance = new static($container, $console, $database);
 

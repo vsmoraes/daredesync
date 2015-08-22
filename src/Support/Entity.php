@@ -60,6 +60,50 @@ abstract class Entity
     }
 
     /**
+     * Retrieve the attributes that have their value changed
+     *
+     * @return array
+     */
+    public function getDirty()
+    {
+        $attributes = [];
+
+        foreach (get_object_vars($this) as $attribute => $value) {
+            if ($this->attributeHasChanged($attribute)) {
+                $attributes[$attribute] = $this->{$attribute};
+            }
+        }
+
+        return $attributes;
+    }
+
+    public function fill(array $data)
+    {
+        foreach ($data as $attribute => $value) {
+            if (! property_exists($this, $attribute)) {
+                continue;
+            }
+
+            $this->set($attribute, $value);
+        }
+    }
+
+    public function toArray()
+    {
+        $result = [];
+
+        foreach ($this->attributes as $attribute => $value) {
+            if (! property_exists($this, $attribute)) {
+                continue;
+            }
+
+            $result[$attribute] = $this->{$attribute};
+        }
+
+        return $result;
+    }
+
+    /**
      * Fill the object's attributes based on an array
      *
      * @param array $attributes
@@ -84,24 +128,6 @@ abstract class Entity
         $this->{$attribute} = $value;
 
         $this->markAsDirty();
-    }
-
-    /**
-     * Retrieve the attributes that have their value changed
-     *
-     * @return array
-     */
-    public function getDirty()
-    {
-        $attributes = [];
-
-        foreach (get_object_vars($this) as $attribute => $value) {
-            if ($this->attributeHasChanged($attribute)) {
-                $attributes[$attribute] = $this->{$attribute};
-            }
-        }
-
-        return $attributes;
     }
 
     /**

@@ -2,35 +2,20 @@
 
 namespace Sync\Otrs\Entity;
 
-use Illuminate\Database\Eloquent\Model;
+use Sync\Support\Entity;
 
-class CustomerCompany extends Model
+class CustomerCompany extends Entity
 {
-    /**
-     * Table name
-     * 
-     * @var string
-     */
-    protected $table = 'customer_company';
-
-    /**
-     * Primary key name
-     *
-     * @var string
-     */
-    protected $primaryKey = 'customer_id';
-
-    /**
-     * Disable timestamps
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * Columns protected against updates
-     *
-     * @var array
-     */
-    protected $guarded = ['customer_id'];
+    protected $customer_id;
+    protected $name;
+    protected $street;
+    protected $zip;
+    protected $country;
+    protected $url;
+    protected $comments;
+    protected $valid_id;
+    protected $create_time;
+    protected $create_by;
+    protected $change_date;
+    protected $change_by;
 }
