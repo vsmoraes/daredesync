@@ -44,4 +44,27 @@ class CustomerCompany
 
         return new CustomerCompanyEntity($result->fetch(PDO::FETCH_ASSOC));
     }
+
+    public function update(CustomerCompanyEntity $entity)
+    {
+        if (! $entity->isDirty()) {
+            return false;
+        }
+
+        $sql = 'UPDATE customer_company SET %s WHERE customer_id = ?';
+        $sql = sprintf($sql, $this->arrayToQueryColumns($entity->getDirty()));
+
+        $this->database->query($sql, array_values($entity->getDirty() + [$entity->getCustomerId()]));
+    }
+
+    protected function arrayToQueryColumns(array $array)
+    {
+        $columns = [];
+
+        foreach ($array as $key => $value) {
+            $columns[] = "${key} = ?";
+        }
+
+        return implode(', ', $columns);
+    }
 }

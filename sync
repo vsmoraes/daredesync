@@ -3,7 +3,7 @@
 
 $app = require __DIR__ . '/bootstrap/app.php';
 
-$app->addCommand(new \Sync\Command\ImportFromPipedrive());
+$app->addCommand(\Sync\Command\ImportFromPipedrive::class);
 $app->run();
 
 $app->getLogger()->info('App just started');

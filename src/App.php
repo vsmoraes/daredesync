@@ -59,8 +59,10 @@ class App
      *
      * @param Command $command
      */
-    public function addCommand(Command $command)
+    public function addCommand($command)
     {
+        $command = $this->resolve($command);
+
         $this->console->add($command);
     }
 

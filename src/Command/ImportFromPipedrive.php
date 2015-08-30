@@ -13,6 +13,15 @@ use Sync\Support\Entity;
 
 class ImportFromPipedrive extends Command
 {
+    private $otrsCompanyRepo;
+
+    public function __construct(CustomerCompany $otrsCompanyRepo)
+    {
+        $this->otrsCompanyRepo = $otrsCompanyRepo;
+
+        parent::__construct(null);
+    }
+
     /**
      * Command definition
      */
@@ -20,6 +29,26 @@ class ImportFromPipedrive extends Command
     {
         $this->setName('sync:fromPipedrive')
             ->setDescription('Import data from the Pipedrive into the database');
+    }
+
+    /**
+     * Send messages to the console
+     *
+     * @param Entity $entity
+     * @param OutputInterface $output
+     * @param $message
+     * @param string $style
+     */
+    private function message(Entity $entity, OutputInterface $output, $message, $style = 'info')
+    {
+        $formatter = $this->getHelper('formatter');
+        $formatedLine = $formatter->formatSection(
+            $entity->getName(),
+            $message,
+            $style
+        );
+
+        $output->writeln($formatedLine);
     }
 
     /**
@@ -34,30 +63,47 @@ class ImportFromPipedrive extends Command
 
         $org_collection = $org_repo->all();
         foreach ($org_collection as $org) {
-            $this->updateOtrs($org);
-//            $output->writeln('Organization: ' . $org->getTaxId() . ' name: ' . $organization->getName());
+            $this->updateOtrs($org, $output);
         }
     }
 
-    protected function updateOtrs(Entity $fromPipedrive)
+    /**
+     * Update the entity with data from pipedrive
+     *
+     * @param Entity $fromPipedrive
+     * @param OutputInterface $output
+     * @return bool
+     */
+    protected function updateOtrs(Entity $fromPipedrive, OutputInterface $output)
     {
         if (! $fromPipedrive->getTaxId()) {
+            $this->message($fromPipedrive, $output, 'No tax_id on Pipedrive', 'error');
+
             return false;
         }
 
-        var_dump($fromPipedrive->toArray());die();
-
         $toOtrs = $this->getCustomerCompany($fromPipedrive->getTaxId());
-        $toOtrs->fill($fromPipedrive);
+        $toOtrs->fill($fromPipedrive->toArray());
 
-        var_dump($toOtrs->getDirty());
-        die();
+        if (! $toOtrs->isDirty()) {
+            $this->message($fromPipedrive, $output, 'Nothing to update', 'comment');
+
+            return false;
+        }
+
+        $this->message($fromPipedrive, $output, 'Updating...');
+        $this->otrsCompanyRepo->update($toOtrs);
     }
 
+    /**
+     * Retrive the company from the repository
+     *
+     * @param $tax_id
+     * @return mixed
+     * @throws \Exception
+     */
     protected function getCustomerCompany($tax_id)
     {
-        $repo = App::getInstance()->resolve(CustomerCompany::class);
-
-        return $repo->findByTaxId($tax_id);
+        return $this->otrsCompanyRepo->findByTaxId($tax_id);
     }
 }
