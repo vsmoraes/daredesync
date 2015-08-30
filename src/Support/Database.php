@@ -43,8 +43,14 @@ class Database
 
     protected function connect()
     {
+        $dsn = "{$this->driver}:dbname={$this->database};host={$this->host}";
+
+        if ($this->driver == 'sqlite') {
+            $dsn = "{$this->driver}:{$this->host}";
+        }
+
         $this->pdoInstance = new PDO(
-            "{$this->driver}:dbname={$this->database};host={$this->host}",
+            $dsn,
             $this->username,
             $this->password
         );
